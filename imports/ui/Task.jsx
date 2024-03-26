@@ -9,6 +9,14 @@ function formatDate() {
 	return dateNum + "/" + monthNum + "/" + yearNum;
 }
 
-export const Task = ({ task }) => {
-    return <li>{task.text}, created at {formatDate(task.createdAt)}</li>
+export const Task = ({ task, onCheckboxClick }) => {
+    return <li>
+            <input 
+                type="checkbox" 
+                checked={!!task.isChecked}
+                onClick={()=> onCheckboxClick(task)} 
+                readOnly
+            />
+            <span>{task.text}</span><span>, created at {formatDate(task.createdAt)}</span>
+        </li>
 };
