@@ -54,6 +54,8 @@ export const App = () => {
 
   const deleteTask = ({_id}) => TasksCollection.remove(_id);
 
+  const logout = () => Meteor.logout();
+
   return (
     <div className="app">
       <header>
@@ -67,6 +69,9 @@ export const App = () => {
       <div className="main">
         {user ? (
           <Fragment>
+            <div className="user" onClick={logout}>
+              {user.username} 🚪
+            </div>
             <TaskForm user={user} />
             <div className="filter">
               <button onClick={()=>setHideCompleted(!hideCompleted)}>
