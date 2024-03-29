@@ -15,6 +15,14 @@ export const App = () => {
       sort: {createdAt: -1}
     }).fetch());
 
+  const pendingTasksCount = useTracker(() =>
+    TasksCollection.find(hideCompletedFilter).count()
+  );
+
+  const pendingTasksTitle = `${
+    pendingTasksCount ? ` (${pendingTasksCount})` : ''
+  }`;
+
   const toggleChecked = ({ _id, isChecked }) => {
     TasksCollection.update(_id, {
       $set: {
@@ -30,7 +38,7 @@ export const App = () => {
       <header>
         <div className="app-bar">
           <div className="app-header">
-            <h1>Welcome to Meteor's "To do list" with React !</h1>
+            <h1>📝️ To Do List {pendingTasksTitle}</h1>
           </div>
         </div>
       </header>
