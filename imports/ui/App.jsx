@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { TasksCollection } from '/imports/api/TasksCollection';
 import { Task } from './Task';
 import { TaskForm } from './TaskForm';
+import { LoginForm } from './LoginForm';
 
 export const App = () => {
   
@@ -44,22 +45,28 @@ export const App = () => {
       </header>
 
       <div className="main">
-        <TaskForm />
-        <div className="filter">
-          <button onClick={()=>setHideCompleted(!hideCompleted)}>
-            {hideCompleted ? 'Show All' : 'Hide Completed'}
-          </button>
-        </div>
-        <ul className="tasks">
-          {tasks.map(task => (
-            <Task
-              key={task._id}
-              task={task}
-              onCheckboxClick={toggleChecked}
-              onDeleteClick={deleteTask}
-            />
-          ))}
-        </ul>
+        {user ? (
+          <Fragment>
+            <TaskForm />
+            <div className="filter">
+              <button onClick={()=>setHideCompleted(!hideCompleted)}>
+                {hideCompleted ? 'Show All' : 'Hide Completed'}
+              </button>
+            </div>
+            <ul className="tasks">
+              {tasks.map(task => (
+                <Task
+                  key={task._id}
+                  task={task}
+                  onCheckboxClick={toggleChecked}
+                  onDeleteClick={deleteTask}
+                />
+              ))}
+            </ul>
+          </Fragment>
+        ) : (
+          <LoginForm/>
+        )}
       </div>
     </div>
   );
