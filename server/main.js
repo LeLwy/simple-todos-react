@@ -1,19 +1,26 @@
 import { Meteor } from 'meteor/meteor';
-import { Account } from 'meteor/accounts-base';
+import { Accounts } from 'meteor/accounts-base';
 import { TasksCollection } from '/imports/api/TasksCollection';
 
-const insertTask = taskText => TasksCollection.insert({ text: taskText });
+const insertTask = (taskText, user) => 
+  TasksCollection.insert({ 
+    text: taskText,
+    userId: user_id,
+    createdAt: new Date(), 
+  });
 
 const SEED_USERNAME = 'meteorite';
 const SEED_PASSWORD = 'password';
 
 Meteor.startup(() => {
-  if(!Account.findUserByUsername(SEED_USERNAME)) {
-    Account.createUser({
+  if(!Accounts.findUserByUsername(SEED_USERNAME)) {
+    Accounts.createUser({
       username: SEED_USERNAME,
       password: SEED_PASSWORD,
     });
   };
+
+  const user = Accounts.findUserByUsername(SEED_USERNAME);
 
   if (TasksCollection.find().count() === 0) {
     [
@@ -23,7 +30,7 @@ Meteor.startup(() => {
       'Fourth Task',
       'Fifth Task',
       'Sixth Task',
-      'Seventh Task'
-    ].forEach(insertTask)
-  };
+      'Seventh Task',
+    ].forEach(taskText => insertTask(taskText, user));
+  }
 });
