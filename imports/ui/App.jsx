@@ -25,7 +25,7 @@ export const App = () => {
     }
 
     return TasksCollection.find(
-      hideCompleted ? hideCompletedFilter : userFilter, {
+      hideCompleted ? pendingOnlyFilter : userFilter, {
       sort: {createdAt: -1}
     }).fetch();
   });
@@ -70,7 +70,7 @@ export const App = () => {
         {user ? (
           <Fragment>
             <div className="user" onClick={logout}>
-              {user.username} 🚪
+              {user.username || user.services.github.username} 🚪
             </div>
             <TaskForm user={user} />
             <div className="filter">
